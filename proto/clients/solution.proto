@@ -1,0 +1,40 @@
+syntax = "proto3";
+
+package solution;
+
+option go_package = "github.com/varkis-ms/service-solution/internal/pkg/pb;clients";
+
+// Solution is service for upload, download user's file.
+service Solution {
+  // Save user's file.
+  rpc SaveFile (stream FileUploadRequest) returns (FileUploadResponse);
+  // Download dataset
+  rpc Download(DownloadRequest) returns(stream DownloadResponse);
+}
+
+message FileUploadRequest {
+  bytes chunk = 1;
+  int64 userID = 2;
+  int64 competitionID = 3;
+  Type type = 4;
+}
+
+message FileUploadResponse {
+  uint32 size = 1;
+}
+
+message DownloadRequest{
+  int64 competitionID = 1;
+}
+
+message DownloadResponse{
+  bytes chunk = 1;
+}
+
+enum Type {
+  NO_DATA = 0;
+  SOLUTION = 1;
+  REQUIREMENTS = 2;
+  DATASET_TEST = 3;
+  DATASET_TRAIN = 4;
+}

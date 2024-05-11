@@ -1,0 +1,46 @@
+syntax = "proto3";
+
+import "google/protobuf/empty.proto";
+
+package user_info;
+
+option go_package = "github.com/varkis-ms/service-user-info/internal/pkg/pb;clients";
+
+// UserInfo is service for managing data about users.
+service UserInfo {
+  // Save info about user.
+  rpc UserInfoSave (UserInfoSaveRequest) returns (google.protobuf.Empty) {};
+  // Edit user's info.
+  rpc UserInfoEdit (UserInfoEditRequest) returns (google.protobuf.Empty) {};
+  // Response info about user.
+  rpc UserInfoGet (UserInfoGetRequest) returns (UserInfoGetResponse);
+}
+
+message UserInfoSaveRequest {
+  int64  userID = 1; // User ID of user.
+  string email = 2;  // User's email.
+}
+
+message UserInfoEditRequest {
+  int64  userID = 1;               // User ID of user.
+  optional string nickname = 2;    // User's nickname.
+  optional string fullName = 3;    // User's full name.
+  optional string birthday = 4;    // User's birthday.
+  optional string location = 5;    // User's location.
+  optional string description = 6; // User's description.
+}
+
+message UserInfoGetRequest {
+  int64 userID = 1; // User ID of user.
+}
+
+message UserInfoGetResponse {
+  int64  userID = 1;               // User ID of user.
+  string email = 2;                // User's email.
+  string createdAt = 3;            // Time of user's registration
+  optional string nickname = 4;    // User's nickname.
+  optional string fullName = 5;    // User's full name.
+  optional string birthday = 6;    // User's birthday.
+  optional string location = 7;    // User's location.
+  optional string description = 8; // User's description.
+}
