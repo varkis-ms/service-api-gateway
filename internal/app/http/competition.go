@@ -12,6 +12,7 @@ import (
 	"github.com/varkis-ms/service-api-gateway/internal/api/handler/competition_list_get"
 	"github.com/varkis-ms/service-api-gateway/internal/api/handler/download_file"
 	"github.com/varkis-ms/service-api-gateway/internal/api/handler/leaderboard_get"
+	"github.com/varkis-ms/service-api-gateway/internal/api/handler/save_solution"
 	"github.com/varkis-ms/service-api-gateway/internal/api/handler/upload_file"
 
 	mwauth "github.com/varkis-ms/service-api-gateway/internal/api/middleware/auth"
@@ -26,6 +27,7 @@ type competitionRoutes struct {
 	leaderboardGetHandler     *leaderboard_get.Handler
 	uploadFileHandler         *upload_file.Handler
 	downloadFileHandler       *download_file.Handler
+	saveSolutionHandler       *save_solution.Handler
 	log                       *slog.Logger
 }
 
@@ -39,6 +41,7 @@ func newCompetitionRoutes(
 	leaderboardGetHandler *leaderboard_get.Handler,
 	uploadFileHandler *upload_file.Handler,
 	downloadFileHandler *download_file.Handler,
+	saveSolutionHandler *save_solution.Handler,
 	log *slog.Logger,
 ) {
 	r := &competitionRoutes{
@@ -49,6 +52,7 @@ func newCompetitionRoutes(
 		leaderboardGetHandler:     leaderboardGetHandler,
 		uploadFileHandler:         uploadFileHandler,
 		downloadFileHandler:       downloadFileHandler,
+		saveSolutionHandler:       saveSolutionHandler,
 		log:                       log,
 	}
 
@@ -184,6 +188,12 @@ func (r *competitionRoutes) upload(c *gin.Context) {
 
 				return
 			}
+		}
+
+		if err = r.saveSolutionHandler.Handle(c, userID, compID.CompetitionID); err != nil {
+			c.AbortWithStatus(http.StatusInternalServerError)
+
+			return
 		}
 	} else {
 		datasetTestFile, err := c.FormFile("dataset_test")

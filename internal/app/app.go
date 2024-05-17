@@ -13,6 +13,7 @@ import (
 	"github.com/varkis-ms/service-api-gateway/internal/api/handler/login"
 	"github.com/varkis-ms/service-api-gateway/internal/api/handler/profile_edit"
 	"github.com/varkis-ms/service-api-gateway/internal/api/handler/profile_get"
+	"github.com/varkis-ms/service-api-gateway/internal/api/handler/save_solution"
 	"github.com/varkis-ms/service-api-gateway/internal/api/handler/signup"
 	"github.com/varkis-ms/service-api-gateway/internal/api/handler/upload_file"
 	mwauth "github.com/varkis-ms/service-api-gateway/internal/api/middleware/auth"
@@ -62,6 +63,7 @@ func Run(configPath string) {
 	leaderboardGetHandler := leaderboard_get.New(competitionClient, logger)
 	uploadFileHandler := upload_file.New(solutionClient, logger)
 	downloadFileHandler := download_file.New(solutionClient, logger)
+	saveSolutionHandler := save_solution.New(competitionClient, logger)
 
 	// Middlewares
 	mw := mwauth.New(authClient, logger)
@@ -81,6 +83,7 @@ func Run(configPath string) {
 		leaderboardGetHandler,
 		uploadFileHandler,
 		downloadFileHandler,
+		saveSolutionHandler,
 		logger,
 	)
 }

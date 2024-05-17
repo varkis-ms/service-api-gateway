@@ -6,6 +6,7 @@ import (
 
 	"github.com/varkis-ms/service-api-gateway/internal/model"
 	"github.com/varkis-ms/service-api-gateway/internal/pkg/pb/clients"
+
 	"google.golang.org/grpc"
 )
 
@@ -106,4 +107,16 @@ func (c *CompetitionClient) UserActivityFull(ctx context.Context, userID int64) 
 	}
 
 	return c.userActivityFullResponseToDto(response), nil
+}
+
+func (c *CompetitionClient) SaveSolution(ctx context.Context, userID, competitionID int64) error {
+	_, err := c.api.SaveSolution(ctx, &clients.SaveSolutionRequest{
+		UserID:        userID,
+		CompetitionID: competitionID,
+	})
+	if err != nil {
+		return fmt.Errorf("grpc.Competition.SaveSolution failed: %w", err)
+	}
+
+	return nil
 }

@@ -17,6 +17,7 @@ import (
 	"github.com/varkis-ms/service-api-gateway/internal/api/handler/login"
 	"github.com/varkis-ms/service-api-gateway/internal/api/handler/profile_edit"
 	"github.com/varkis-ms/service-api-gateway/internal/api/handler/profile_get"
+	"github.com/varkis-ms/service-api-gateway/internal/api/handler/save_solution"
 	"github.com/varkis-ms/service-api-gateway/internal/api/handler/signup"
 	"github.com/varkis-ms/service-api-gateway/internal/api/handler/upload_file"
 	"github.com/varkis-ms/service-api-gateway/internal/api/middleware/auth"
@@ -38,6 +39,7 @@ func NewRouter(
 	leaderboardGetHandler *leaderboard_get.Handler,
 	uploadFileHandler *upload_file.Handler,
 	downloadFileHandler *download_file.Handler,
+	saveSolutionHandler *save_solution.Handler,
 	log *slog.Logger,
 ) {
 	handler := gin.Default()
@@ -71,6 +73,7 @@ func NewRouter(
 			leaderboardGetHandler,
 			uploadFileHandler,
 			downloadFileHandler,
+			saveSolutionHandler,
 			log,
 		)
 	}
